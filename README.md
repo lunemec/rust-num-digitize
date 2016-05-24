@@ -19,5 +19,5 @@ num-digitize = "0.1"
 and this to your crate root:
 
 ```rust
-extern crate num-digitize;
+extern crate num_digitize;
 ```
