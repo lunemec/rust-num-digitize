@@ -1,6 +1,5 @@
 extern crate num;
 
-
 use std::clone::Clone;
 use std::ops::DivAssign;
 use num::*;
@@ -8,12 +7,17 @@ use num::*;
 /// Converts integer of type N (all implementations supported by num::Integer)
 /// and returns a `Vec<N>` of its digits (base 10).
 ///
-/// # Examples
+/// # Arguments
+///
+/// * `number` - any number type which have implementation for num::Integer
+///
+/// # Example
 ///
 /// ```
+/// use num_digitize::digitize;
+///
 /// let number: u8 = 12;
-/// println!("{:?}", digitize(number));
-/// [1, 2]
+/// assert!(digitize(number) == vec![1, 2]);
 /// ```
 pub fn digitize<N: Copy + Clone + num::Integer + DivAssign>(number: N) -> Vec<N> {
     let mut number = number.clone();
