@@ -1,5 +1,12 @@
 [package]
 name = "num-digitize"
+description = "Converts integer of type N into Vec<N>"
+homepage = "https://github.com/lunemec/rust-num-digitize"
+repository = "https://github.com/lunemec/rust-num-digitize"
+readme = "README.md"
+keywords = ["digizize"]
+license = "WTFPL"
+license-file = "LICENSE"
 version = "0.1.0"
 authors = ["Nemec Lukas <lukas.nemec2@firma.seznam.cz>"]
 
