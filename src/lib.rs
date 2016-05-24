@@ -1,3 +1,5 @@
+#![crate_name = "num-digitize"]
+#![crate_type = "lib"]
 extern crate num;
 
 
