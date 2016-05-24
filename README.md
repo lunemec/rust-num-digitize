@@ -1,4 +1,6 @@
 # num-digitize
+![Image of Travis CI build status]
+(https://travis-ci.org/lunemec/rust-num-digitize.svg?branch=master)
 
 Converts integer of type N (all implementations supported by num::Integer)
 and returns a `Vec<N>` of its digits (base 10).
