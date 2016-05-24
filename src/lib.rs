@@ -1,3 +1,4 @@
+#![doc(html_root_url = "https://lunemec.github.io/rust-num-digitize/")]
 extern crate num;
 
 use std::clone::Clone;

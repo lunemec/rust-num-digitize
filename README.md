@@ -3,7 +3,7 @@
 Converts integer of type N (all implementations supported by num::Integer)
 and returns a `Vec<N>` of its digits (base 10).
 
-[Documentation](http://rust-num-digitize.github.io/num)
+[Documentation](https://lunemec.github.io/rust-num-digitize/)
 
 ## Usage
 
