@@ -1,16 +1,15 @@
 #![doc(html_root_url = "https://lunemec.github.io/rust-num-digitize/")]
 extern crate num;
 
-use std::clone::Clone;
 use std::ops::DivAssign;
 use num::*;
 
-/// Converts integer of type N (all implementations supported by num::Integer)
+/// Converts integer of type `N` (all implementations supported by `num::Integer`)
 /// and returns a `Vec<N>` of its digits (base 10).
 ///
 /// # Arguments
 ///
-/// * `number` - any number type which have implementation for num::Integer
+/// * `number` - any number type which have implementation for `num::Integer`
 ///
 /// # Example
 ///
@@ -25,18 +24,20 @@ pub fn digitize<N: Copy + Clone + num::Integer + DivAssign>(number: N) -> Vec<N>
     let mut digits: Vec<N> = Vec::new();
 
     let _0 = N::zero();
-    let _1 = N::one();
-    let _2 = _1 + _1;
-    let _3 = _1 + _2;
-    let _5 = _2 + _3;
-    let _10 = _5 * _2;
+    let _10 = {
+        let _1 = N::one();
+        let _2 = _1 + _1;
+        let _3 = _1 + _2;
+        let _5 = _2 + _3;
+        _5 * _2
+    };
     while number > _0 {
         let remainder = number % _10;
         digits.insert(0, remainder);
         number /= _10;
     }
 
-    return digits;
+    digits
 }
 
 
