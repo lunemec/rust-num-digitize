@@ -5,7 +5,7 @@ use std::ops::DivAssign;
 use num::*;
 
 /// Converts integer of type `N` (all implementations supported by `num::Integer`)
-/// and returns a `Vec<N>` of its digits (base 10).
+/// and returns a `Vec<u8>` of its digits (base 10).
 ///
 /// # Arguments
 ///
@@ -13,15 +13,26 @@ use num::*;
 ///
 /// # Example
 ///
+/// Basic usage:
+///
 /// ```
 /// use num_digitize::digitize;
 ///
 /// let number: u8 = 12;
-/// assert!(digitize(number) == vec![1, 2]);
+/// let vector: Vec<u8> = vec![1, 2];
+/// assert!(digitize(number) == vector);
 /// ```
-pub fn digitize<N: Copy + Clone + num::Integer + DivAssign>(number: N) -> Vec<N> {
+///
+/// Negative numbers return empty `Vec<u8>`:
+///
+/// ```
+/// use num_digitize::digitize;
+/// let number = -12;
+/// assert!(digitize(number) == vec![]);
+/// ```
+pub fn digitize<N: Copy + Clone + Integer + NumCast + DivAssign>(number: N) -> Vec<u8> {
     let mut number = number.clone();
-    let mut digits: Vec<N> = Vec::new();
+    let mut digits: Vec<u8> = Vec::new();
 
     let _0 = N::zero();
     let _10 = {
@@ -32,7 +43,7 @@ pub fn digitize<N: Copy + Clone + num::Integer + DivAssign>(number: N) -> Vec<N>
         _5 * _2
     };
     while number > _0 {
-        let remainder = number % _10;
+        let remainder: u8 = cast(number % _10).unwrap();
         digits.insert(0, remainder);
         number /= _10;
     }
@@ -44,26 +55,34 @@ pub fn digitize<N: Copy + Clone + num::Integer + DivAssign>(number: N) -> Vec<N>
 #[test]
 fn test_basic_number() {
     let number: i32 = 1234;
-    let vector: Vec<i32> = vec![1, 2, 3, 4];
+    let vector: Vec<u8> = vec![1, 2, 3, 4];
     assert!(digitize(number) == vector);
 }
 
 #[test]
 fn test_zero() {
     let number = 0;
-    assert!(digitize(number) == vec![]);
+    let vector: Vec<u8> = vec![];
+    assert!(digitize(number) == vector);
 }
 
 #[test]
 fn test_u64() {
     let number: u64 = 12341234;
-    let vector: Vec<u64> = vec![1, 2, 3, 4, 1, 2, 3, 4];
+    let vector: Vec<u8> = vec![1, 2, 3, 4, 1, 2, 3, 4];
     assert!(digitize(number) == vector);
 }
 
 #[test]
 fn test_usize() {
     let number: usize = 1234567890;
-    let vector: Vec<usize> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    let vector: Vec<u8> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    assert!(digitize(number) == vector);
+}
+
+#[test]
+fn test_negative() {
+    let number = -1234567890;
+    let vector: Vec<u8> = vec![];
     assert!(digitize(number) == vector);
 }
