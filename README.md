@@ -1,4 +1,4 @@
-# num-digitize
+# rust-num-digitize
 ![Image of Travis CI build status]
 (https://travis-ci.org/lunemec/rust-num-digitize.svg?branch=master)
 ![Crates.io]
