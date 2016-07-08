@@ -1,6 +1,6 @@
 # rust-num-digitize
-![Image of Travis CI build status]
-(https://travis-ci.org/lunemec/rust-num-digitize.svg?branch=master)
+[![Image of Travis CI build status]
+(https://travis-ci.org/lunemec/rust-num-digitize.svg?branch=master)](https://travis-ci.org/lunemec/rust-num-digitize)
 ![Crates.io]
 (https://img.shields.io/crates/v/num-digitize.svg)
 
