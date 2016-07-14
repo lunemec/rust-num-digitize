@@ -5,7 +5,7 @@
 (https://img.shields.io/crates/v/num-digitize.svg)](https://crates.io/crates/num-digitize)
 
 Converts integer of type N (all implementations supported by num::Integer)
-and returns a `Vec<N>` of its digits (base 10).
+and returns a `Vec<u8>` of its digits (base 10).
 
 [Documentation](https://lunemec.github.io/rust-num-digitize/)
 
