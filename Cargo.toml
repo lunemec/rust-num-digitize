@@ -1,12 +1,12 @@
 [package]
 name = "num-digitize"
-description = "Converts integer of type N into Vec<u8> containing its digits."
+description = "Converts integer of type N into Vec<i8> containing its digits."
 homepage = "https://github.com/lunemec/rust-num-digitize"
 repository = "https://github.com/lunemec/rust-num-digitize"
 readme = "README.md"
 keywords = ["digizize"]
 license = "WTFPL"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Nemec Lukas <lukas.nemec2@firma.seznam.cz>"]
 
 [dependencies]
