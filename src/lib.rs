@@ -64,12 +64,18 @@ pub trait FromDigits {
     /// assert!(vector.from_digits() == number);
     /// ```
     ///
+    /// It works like this:
+    /// ```text
+    /// [-1, -2, -3]
+    /// (-1 * 10^2) + (-2 * 10^1) + (-3 * 10^0) = -123
+    /// ```
+    ///
     /// Please note, all of the digits have to be negative in order to get the correct number back.
     ///
     /// Also note, if you use this on vector of larger numbers (> 9 or < -9), the results will be wrong.
-    /// 
+    ///
     /// See `ToDigits` trait for details.
-    fn from_digits(&self) -> i64;
+    fn from_digits(&self) -> isize;
 }
 
 macro_rules! impl_for {
@@ -90,17 +96,13 @@ macro_rules! impl_for {
         }
 
         impl FromDigits for Vec<$IntegerType> {
-            fn from_digits(&self) -> i64 {
-                let mut sum: i64 = 0;
-                let ten: i64 = 10;
+            fn from_digits(&self) -> isize {
+                let ten: isize = 10;
 
-                for (i, number) in self.into_iter().rev().enumerate() {
-                    let i: u32 = cast(i).unwrap();
-                    let number: i64 = cast(*number).unwrap();
-                    sum += number * ten.pow(i);
-                }
-
-                sum
+                self.into_iter().rev().enumerate().fold(
+                    0isize,
+                    |mut sum, (i, number)| {sum += *number as isize * ten.pow(i as u32); sum}
+                )
             }
         }
     }
@@ -270,7 +272,7 @@ mod test {
 
     #[test]
     fn test_from_usize() {
-        let i = 1234567890;
+        let i:isize = 1234567890;
         let vector: Vec<i8> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
         assert!(vector.from_digits() == i);
     }
