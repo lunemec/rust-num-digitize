@@ -15,7 +15,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-num-digitize = "0.2"
+num-digitize = "0.3"
 ```
 
 and this to your crate root:
