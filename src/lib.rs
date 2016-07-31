@@ -74,7 +74,7 @@ pub trait FromDigits {
     /// Also note, if you use this on vector of larger numbers (> 9 or < -9), the results will be wrong.
     ///
     /// See `ToDigits` trait for details.
-    fn from_digits(&self) -> isize;
+    fn from_digits(&self) -> i64;
 }
 
 macro_rules! impl_for {
@@ -95,23 +95,23 @@ macro_rules! impl_for {
         }
 
         impl FromDigits for Vec<$IntegerType> {
-            fn from_digits(&self) -> isize {
-                let ten: isize = 10;
+            fn from_digits(&self) -> i64 {
+                let ten: i64 = 10;
 
                 self.into_iter().fold(
-                    0isize,
-                    |mut sum, number| {sum *= ten; sum += *number as isize; sum}
+                    0i64,
+                    |mut sum, number| {sum *= ten; sum += *number as i64; sum}
                 )
             }
         }
 
         impl<'a> FromDigits for &'a [$IntegerType] {
-            fn from_digits(&self) -> isize {
-                let ten: isize = 10;
+            fn from_digits(&self) -> i64 {
+                let ten: i64 = 10;
 
                 self.into_iter().fold(
-                    0isize,
-                    |mut sum, number| {sum *= ten; sum += *number as isize; sum}
+                    0i64,
+                    |mut sum, number| {sum *= ten; sum += *number as i64; sum}
                 )
             }
         }
