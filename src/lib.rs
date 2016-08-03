@@ -1,10 +1,13 @@
 #![doc(html_root_url = "https://lunemec.github.io/rust-num-digitize/")]
 extern crate num;
 
-use num::cast;
+use std::iter::IntoIterator;
+use std::ops::DivAssign;
+use num::{Num, NumCast, cast};
 
 
-pub trait ToDigits {
+pub trait ToDigits
+where Self: Copy + Clone + Num + NumCast + DivAssign {
     /// Converts integer to `Vec<i8>` of its digits (base 10).
     ///
     /// # Example
@@ -35,10 +38,25 @@ pub trait ToDigits {
     /// ```
     ///
     /// Or with `FromDigits` trait.
-    fn to_digits(&self) -> Vec<i8>;
+    fn to_digits(&self) -> Vec<i8> {
+        let mut number = self.clone();
+        let mut digits: Vec<i8> = Vec::new();
+
+        let zero: Self = cast(0).unwrap();
+        let ten: Self = cast(10).unwrap();
+
+        while number != zero {
+            let remainder: i8 = cast(number % ten).unwrap();
+            digits.insert(0, remainder);
+            number /= ten;
+        }
+
+        digits
+    }
 }
 
-pub trait FromDigits {
+pub trait FromDigits
+where Self: IntoIterator {
     /// Converts `Vec<N>` or `&[N]` of digits back to the original number.
     ///
     /// # Example
@@ -74,36 +92,18 @@ pub trait FromDigits {
     /// Also note, if you use this on vector of larger numbers (> 9 or < -9), the results will be wrong.
     ///
     /// See `ToDigits` trait for details.
-    fn from_digits(&self) -> i64;
+    fn from_digits(&self) -> i64 {
+        let ten: i64 = 10;
+
+        self.into_iter().fold(
+            0i64,
+            |mut sum, number| {sum *= ten; sum += number as i64; sum}
+        )
+    }
 }
 
 macro_rules! impl_for {
     ($IntegerType: ty) => {
-        impl ToDigits for $IntegerType {
-            fn to_digits(&self) -> Vec<i8> {
-                let mut number = self.clone();
-                let mut digits: Vec<i8> = Vec::new();
-
-                while number != 0 {
-                    let remainder: i8 = cast(number % 10).unwrap();
-                    digits.insert(0, remainder);
-                    number /= 10;
-                }
-
-                digits
-            }
-        }
-
-        impl FromDigits for Vec<$IntegerType> {
-            fn from_digits(&self) -> i64 {
-                let ten: i64 = 10;
-
-                self.into_iter().fold(
-                    0i64,
-                    |mut sum, number| {sum *= ten; sum += *number as i64; sum}
-                )
-            }
-        }
 
         impl<'a> FromDigits for &'a [$IntegerType] {
             fn from_digits(&self) -> i64 {
@@ -117,6 +117,28 @@ macro_rules! impl_for {
         }
     }
 }
+
+impl ToDigits for i8 {}
+impl ToDigits for i16 {}
+impl ToDigits for i32 {}
+impl ToDigits for i64 {}
+impl ToDigits for isize {}
+impl ToDigits for u8 {}
+impl ToDigits for u16 {}
+impl ToDigits for u32 {}
+impl ToDigits for u64 {}
+impl ToDigits for usize {}
+
+impl FromDigits for Vec<i8> {}
+impl FromDigits for Vec<i16> {}
+impl FromDigits for Vec<i32> {}
+impl FromDigits for Vec<i64> {}
+impl FromDigits for Vec<isize> {}
+impl FromDigits for Vec<u8> {}
+impl FromDigits for Vec<u16> {}
+impl FromDigits for Vec<u32> {}
+impl FromDigits for Vec<u64> {}
+impl FromDigits for Vec<usize> {}
 
 impl_for! {i8}
 impl_for! {i16}
