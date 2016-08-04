@@ -92,22 +92,18 @@ where Self: Copy + Sized + Num + NumCast {
     /// Also note, if you use this on vector of larger numbers (> 9 or < -9), the results will be wrong.
     ///
     /// See `ToDigits` trait for details.
-    fn from_iter_radix<I: IntoIterator<Item=Self>>(iter: I) -> i64 {
-        let ten: i64 = 10;
-
+    fn from_iter_radix<I: IntoIterator<Item=Self>>(iter: I, base: i64) -> i64 {
         iter.into_iter().fold(
             0i64,
-            |mut sum: i64, number| {sum *= ten; sum += cast(number).unwrap(); sum}
+            |mut sum: i64, number| {sum *= base; sum += cast(number).unwrap(); sum}
         )
     }
 }
 
-
-// TODO make this work somehow with ?Sized.
 pub trait FromDigits<N>
 where N: FromIterRadix, Self: Sized + IntoIterator<Item=N> {
     fn from_digits(self) -> i64 {
-        N::from_iter_radix(self)
+        N::from_iter_radix(self, 10i64)
     }
 }
 
@@ -134,6 +130,11 @@ impl FromIterRadix for u64 {}
 impl FromIterRadix for usize {}
 
 impl<I, N> FromDigits<N> for I where N: FromIterRadix, I: IntoIterator<Item=N> {}
+impl<'a, N> FromDigits<N> for &'a [N] where N: FromIterRadix {
+    fn from_digits(&self) -> i64 {
+        N::from_iter_radix(self.iter().cloned(), 10i64)
+    }
+}
 
 #[cfg(test)]
 mod test {
@@ -307,43 +308,50 @@ mod test {
         assert_eq!(vector.from_digits(), i);
     }
 
-    // #[test]
-    // fn test_from_slice_i8() {
-    //     let i = 12345678;
-    //     let vector: Vec<i8> = vec![1, 2, 3, 4, 5, 6, 7, 8];
-    //     let slice = &vector[..];
-    //     assert_eq!(slice.from_digits(), i);
-    // }
+     #[test]
+     fn test_from_iter_radix_slice_i8() {
+         let i = 12345678;
+         println!("{}", i8::from_iter_radix([1, 2, 3, 4, 5, 6, 7, 8].iter().cloned(), 10));
+         assert_eq!(1, i);
+     }
 
-    // #[test]
-    // fn test_from_slice_i16() {
-    //     let i = 123456789;
-    //     let vector: Vec<i16> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
-    //     let slice = &vector[..];
-    //     assert_eq!(slice.from_digits(), i);
-    // }
+//     #[test]
+//     fn test_from_slice_i8() {
+//         let i = 12345678;
+//         let vector: Vec<i8> = vec![1, 2, 3, 4, 5, 6, 7, 8];
+//         let slice = &vector[..];
+//         assert_eq!(slice.from_digits(), i);
+//     }
 
-    // #[test]
-    // fn test_from_slice_i32() {
-    //     let i = 1234567890;
-    //     let vector: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-    //     let slice = &vector[..];
-    //     assert_eq!(slice.from_digits(), i);
-    // }
-
-    // #[test]
-    // fn test_from_slice_i64() {
-    //     let i = 12345678904;
-    //     let vector: Vec<i64> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 4];
-    //     let slice = &vector[..];
-    //     assert_eq!(slice.from_digits(), i);
-    // }
-
-    // #[test]
-    // fn test_from_slice_isize() {
-    //     let i = 123457890;
-    //     let vector: Vec<isize> = vec![1, 2, 3, 4, 5, 7, 8, 9, 0];
-    //     let slice = &vector[..];
-    //     assert_eq!(slice.from_digits(), i);
-    // }
+//     #[test]
+//     fn test_from_slice_i16() {
+//         let i = 123456789;
+//         let vector: Vec<i16> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
+//         let slice = &vector[..];
+//         assert_eq!(slice.from_digits(), i);
+//     }
+//
+//     #[test]
+//     fn test_from_slice_i32() {
+//         let i = 1234567890;
+//         let vector: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+//         let slice = &vector[..];
+//         assert_eq!(slice.from_digits(), i);
+//     }
+//
+//     #[test]
+//     fn test_from_slice_i64() {
+//         let i = 12345678904;
+//         let vector: Vec<i64> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 4];
+//         let slice = &vector[..];
+//         assert_eq!(slice.from_digits(), i);
+//     }
+//
+//     #[test]
+//     fn test_from_slice_isize() {
+//         let i = 123457890;
+//         let vector: Vec<isize> = vec![1, 2, 3, 4, 5, 7, 8, 9, 0];
+//         let slice = &vector[..];
+//         assert_eq!(slice.from_digits(), i);
+//     }
 }
