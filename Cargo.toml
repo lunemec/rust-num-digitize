@@ -7,7 +7,7 @@ readme = "README.md"
 keywords = ["digizize"]
 license = "WTFPL"
 version = "0.3.0"
-authors = ["Nemec Lukas <lukas.nemec2@firma.seznam.cz>"]
+authors = ["Nemec Lukas <lu.nemec@gmail.com>"]
 
 [dependencies]
 num = "0.1"
