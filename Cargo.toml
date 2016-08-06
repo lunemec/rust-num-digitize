@@ -6,7 +6,7 @@ repository = "https://github.com/lunemec/rust-num-digitize"
 readme = "README.md"
 keywords = ["digizize"]
 license = "WTFPL"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Nemec Lukas <lu.nemec@gmail.com>"]
 
 [dependencies]
