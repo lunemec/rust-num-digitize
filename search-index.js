@@ -1,0 +1,3 @@
+var searchIndex = {};
+searchIndex["num_digitize"] = {"doc":"","items":[[8,"ToDigits","num_digitize","",null,null],[11,"to_digits","","Converts integer to `Vec&lt;i8&gt;` of its digits (base 10).",0,null],[8,"FromIterRadix","","",null,null],[11,"from_iter_radix","","Converts a iterable of numbers back to original number of given base.",1,{"inputs":[{"name":"i"},{"name":"i64"}],"output":{"name":"i64"}}],[8,"FromDigits","","",null,null],[11,"from_digits","","Converts iterable of digits back to the original number.\nThis does not currently work for slices.",2,null]],"paths":[[8,"ToDigits"],[8,"FromIterRadix"],[8,"FromDigits"]]};
+initSearch(searchIndex);
