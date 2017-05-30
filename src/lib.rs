@@ -75,7 +75,7 @@ where Self: Copy + Sized + Num + NumCast {
     fn from_iter_radix<I: IntoIterator<Item=Self>>(iter: I, base: i64) -> i64 {
         iter.into_iter().fold(
             0i64,
-            |mut sum: i64, number| {sum *= base; sum += cast(number).unwrap(); sum}
+            |mut sum: i64, number| {sum *= base; sum += cast::<Self,i64>(number).unwrap(); sum}
         )
     }
 }
